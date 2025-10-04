@@ -43,16 +43,22 @@ cd expense_tracker_web
 ```
 
 ### Step 2: (Optional but recommended) Create and activate a virtual environment
+```bash
 python -m venv venv
 .\venv\Scripts\activate
 
+```
 
 Step 3: Install dependencies
+```bash
 pip install flask flask-mysqldb flask-wtf wtforms
 
+```
 
 Step 4: Setup MySQL database
+
 1. Open MySQL command line or Workbench and run the following commands:
+```bash
 CREATE DATABASE expense_tracker_db;
 
 CREATE USER 'expense_user'@'localhost' IDENTIFIED BY 'password123';
@@ -71,22 +77,23 @@ CREATE TABLE expenses (
     category VARCHAR(50)
 );
 
-
+```
 Step 5: Configure the app
 Open app.py and update the MySQL configuration to match your setup:
-
+```bash
 app.config['MYSQL_USER'] = 'expense_user'
 app.config['MYSQL_PASSWORD'] = 'password123'
 app.config['MYSQL_DB'] = 'expense_tracker_db'
 
+```
 
 
 Step 6: Run the Flask application
 In PowerShell, set the environment variable and start the app:
-
+```bash
 $env:FLASK_APP = "app.py"
 python -m flask run
-
+```
 
 Access the application
 Open your browser and go to:
