@@ -102,16 +102,16 @@ http://127.0.0.1:5000/
 
 
 Usage
-• Click Add Expense to add new expenses
-• Use Edit button to update expenses
-• Use Delete button to remove expenses
-• Data is saved persistently in MySQL database
+- Click Add Expense to add new expenses
+- Use Edit button to update expenses
+- Use Delete button to remove expenses
+- Data is saved persistently in MySQL database
 
 Assumptions and Design Notes
-• Single-user application (no authentication)
-• Categories are predefined but can be customized
-• Basic validation on input fields using WTForms
-• Ul built with Bootstrap for simplicity and responsiveness
+- Single-user application (no authentication)
+- Categories are predefined but can be customized
+- Basic validation on input fields using WTForms
+- Ul built with Bootstrap for simplicity and responsiveness
 
 License
 This project is open source and free to use.
