@@ -45,7 +45,10 @@ cd expense_tracker_web
 ### Step 2: (Optional but recommended) Create and activate a virtual environment
 ```bash
 python -m venv venv
-.\venv\Scripts\activate
+.\venv\Scripts\activate  # Windows PowerShell
+# or
+source venv/bin/activate  # macOS/Linux
+
 
 ```
 
@@ -91,8 +94,12 @@ app.config['MYSQL_DB'] = 'expense_tracker_db'
 Step 6: Run the Flask application
 In PowerShell, set the environment variable and start the app:
 ```bash
-$env:FLASK_APP = "app.py"
+$env:FLASK_APP = "app.py"  # PowerShell
+# or
+export FLASK_APP=app.py  # macOS/Linux
+
 python -m flask run
+
 ```
 
 Access the application
@@ -102,16 +109,21 @@ http://127.0.0.1:5000/
 
 
 Usage
-- Click Add Expense to add new expenses
-- Use Edit button to update expenses
-- Use Delete button to remove expenses
-- Data is saved persistently in MySQL database
+- Use the Home page to view all expenses, with filters for date range and category
+- Click Add Expense to add new expense records
+- Use Edit button to update existing expenses
+- Use Delete button to remove expenses (with confirmation)
+- Click Summary in the navbar to view detailed reports:
+  - Total spending
+  - Spending by category
+  - Spending by month
 
 Assumptions and Design Notes
 - Single-user application (no authentication)
-- Categories are predefined but can be customized
+- Categories are predefined but can be customized in the code
 - Basic validation on input fields using WTForms
 - Ul built with Bootstrap for simplicity and responsiveness
+- Navbar links have been improved for better visibility and usability
 
 License
 This project is open source and free to use.
