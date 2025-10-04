@@ -37,5 +37,5 @@ A simple web-based personal expense tracker built with **Flask** and **MySQL**.
 ### Step 1: Clone or download the repo
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/sourav8908/expense_tracker_web.git
 cd expense_tracker_web
