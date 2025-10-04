@@ -40,8 +40,9 @@ A simple web-based personal expense tracker built with **Flask** and **MySQL**.
 git clone https://github.com/sourav8908/expense_tracker_web.git
 cd expense_tracker_web
 
+```
 
-Step 2: (Optional but recommended) Create and activate a virtual environment
+### Step 2: (Optional but recommended) Create and activate a virtual environment
 python -m venv venv
 .\venv\Scripts\activate
 
