@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Add Expense</h2>
+<form method="POST" novalidate>
+  <div class="mb-3">
+    <label for="amount" class="form-label">Amount</label>
+    {{ form.amount(class="form-control", id="amount") }}
+    {% for error in form.amount.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+  <div class="mb-3">
+    <label for="expense_date" class="form-label">Date</label>
+    {{ form.expense_date(class="form-control", id="expense_date") }}
+    {% for error in form.expense_date.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+  <div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    {{ form.category(class="form-select", id="category") }}
+  </div>
+  <div class="mb-3">
+    <label for="note" class="form-label">Note</label>
+    {{ form.note(class="form-control", id="note") }}
+    {% for error in form.note.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+  <button type="submit" class="btn btn-primary">Add Expense</button>
+  <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
