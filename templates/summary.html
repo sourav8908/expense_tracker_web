@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Summary Report</h2>
+
+<!-- Total Spent -->
+<div class="alert alert-info mt-3">
+  <strong>Total Spent:</strong> ₹{{ "%.2f"|format(total_spent) }}
+</div>
+
+<!-- Category Summary -->
+<h4>Spending by Category</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Total Spent (₹)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for category, total in category_summary %}
+    <tr>
+      <td>{{ category }}</td>
+      <td>{{ "%.2f"|format(total) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Monthly Summary -->
+<h4 class="mt-4">Spending by Month</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Month</th>
+      <th>Total Spent (₹)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for month, total in monthly_summary %}
+    <tr>
+      <td>{{ month }}</td>
+      <td>{{ "%.2f"|format(total) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

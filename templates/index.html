@@ -1,6 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>All Expenses</h2>
+
+<!-- Filter form -->
+<form method="GET" action="{{ url_for('index') }}" class="mb-3">
+  <div class="row g-2 align-items-center">
+    <div class="col-auto">
+      <input type="date" name="start_date" class="form-control" value="{{ request.args.get('start_date', '') }}" placeholder="Start Date" />
+    </div>
+    <div class="col-auto">
+      <input type="date" name="end_date" class="form-control" value="{{ request.args.get('end_date', '') }}" placeholder="End Date" />
+    </div>
+    <div class="col-auto">
+      <select name="category" class="form-select">
+        <option value="">All Categories</option>
+        {% for cat in categories %}
+          <option value="{{ cat }}" {% if request.args.get('category') == cat %}selected{% endif %}>{{ cat }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary">Filter</button>
+      <a href="{{ url_for('index') }}" class="btn btn-secondary">Reset</a>
+    </div>
+  </div>
+</form>
+
 <table class="table table-bordered table-striped">
   <thead>
     <tr>

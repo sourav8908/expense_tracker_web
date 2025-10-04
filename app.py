@@ -4,7 +4,7 @@ from wtforms import Form, DecimalField, StringField, DateField, SelectField, val
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # You can change this
+app.secret_key = 'your_secret_key'  # Change this in production!
 
 # MySQL connection info
 app.config['MYSQL_HOST'] = 'localhost'
@@ -14,21 +14,44 @@ app.config['MYSQL_DB'] = 'expense_tracker_db'
 
 mysql = MySQL(app)
 
-# Define the form used for input validation
+# Expense Form with validation
 class ExpenseForm(Form):
     amount = DecimalField('Amount', [validators.InputRequired(), validators.NumberRange(min=0.01)])
     expense_date = DateField('Date', [validators.InputRequired()], format='%Y-%m-%d', default=datetime.today)
     note = StringField('Note', [validators.Length(max=255)])
     category = SelectField('Category', choices=[('Food', 'Food'), ('Travel', 'Travel'), ('Bills', 'Bills'), ('Other', 'Other')])
 
-# Home page - list all expenses
+# Home page with filtering
 @app.route('/')
 def index():
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    category = request.args.get('category')
+
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id, amount, expense_date, note, category FROM expenses ORDER BY expense_date DESC")
+    cur.execute("SELECT DISTINCT category FROM expenses")
+    categories = [row[0] for row in cur.fetchall() if row[0]]
+
+    query = "SELECT id, amount, expense_date, note, category FROM expenses WHERE 1=1"
+    params = []
+
+    if start_date:
+        query += " AND expense_date >= %s"
+        params.append(start_date)
+    if end_date:
+        query += " AND expense_date <= %s"
+        params.append(end_date)
+    if category and category != "":
+        query += " AND category = %s"
+        params.append(category)
+
+    query += " ORDER BY expense_date DESC"
+
+    cur.execute(query, tuple(params))
     expenses = cur.fetchall()
     cur.close()
-    return render_template('index.html', expenses=expenses)
+
+    return render_template('index.html', expenses=expenses, categories=categories)
 
 # Add new expense
 @app.route('/add', methods=['GET', 'POST'])
@@ -92,6 +115,35 @@ def delete_expense(id):
     cur.close()
     flash('Expense deleted successfully!', 'success')
     return redirect(url_for('index'))
+
+# Summary Report Page
+@app.route('/summary')
+def summary():
+    cur = mysql.connection.cursor()
+
+    # Total spending
+    cur.execute("SELECT SUM(amount) FROM expenses")
+    total_spent = cur.fetchone()[0] or 0
+
+    # Spending by category
+    cur.execute("SELECT category, SUM(amount) FROM expenses GROUP BY category")
+    category_summary = cur.fetchall()
+
+    # Spending by month
+    cur.execute("""
+        SELECT DATE_FORMAT(expense_date, '%Y-%m') AS month, SUM(amount)
+        FROM expenses
+        GROUP BY month
+        ORDER BY month DESC
+    """)
+    monthly_summary = cur.fetchall()
+
+    cur.close()
+
+    return render_template('summary.html',
+                           total_spent=total_spent,
+                           category_summary=category_summary,
+                           monthly_summary=monthly_summary)
 
 if __name__ == '__main__':
     app.run(debug=True)
